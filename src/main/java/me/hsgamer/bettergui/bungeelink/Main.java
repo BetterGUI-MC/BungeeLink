@@ -1,8 +1,8 @@
-package me.hsgamer.bettergui.exampleaddon;
+package me.hsgamer.bettergui.bungeelink;
 
 import me.hsgamer.bettergui.object.addon.Addon;
 
-public final class ExampleAddon extends Addon {
+public final class Main extends Addon {
 
   /**
    * Called when loading the addon
