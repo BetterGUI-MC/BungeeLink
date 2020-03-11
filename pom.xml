@@ -65,6 +65,10 @@
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
     <repository>
+      <id>bungeecord-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+    <repository>
       <id>codemc-releases</id>
       <url>https://repo.codemc.io/repository/maven-releases/</url>
     </repository>
@@ -85,6 +89,13 @@
       <groupId>me.HSGamer</groupId>
       <artifactId>BetterGUI</artifactId>
       <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-api</artifactId>
+      <version>1.14-SNAPSHOT</version>
+      <type>jar</type>
       <scope>provided</scope>
     </dependency>
   </dependencies>

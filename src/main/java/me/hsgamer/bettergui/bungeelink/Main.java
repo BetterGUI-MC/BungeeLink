@@ -1,40 +1,36 @@
 package me.hsgamer.bettergui.bungeelink;
 
+import me.hsgamer.bettergui.builder.CommandBuilder;
+import me.hsgamer.bettergui.bungeelink.command.AlertCommand;
+import me.hsgamer.bettergui.bungeelink.command.ServerCommand;
 import me.hsgamer.bettergui.object.addon.Addon;
+import org.bukkit.Bukkit;
 
 public final class Main extends Addon {
 
-  /**
-   * Called when loading the addon
-   *
-   * @return whether the addon is loaded properly
-   */
-  @Override
-  public boolean onLoad() {
-    return true;
+  private static final String BUNGEE = "BungeeCord";
+  private static BungeeUtils utils;
+
+  public static BungeeUtils getUtils() {
+    return utils;
   }
 
-  /**
-   * Called when enabling the addon
-   */
   @Override
   public void onEnable() {
-    // Enable logic
+    utils = new BungeeUtils(getPlugin());
+    if (!Bukkit.getMessenger().isOutgoingChannelRegistered(getPlugin(), BUNGEE)) {
+      Bukkit.getMessenger().registerOutgoingPluginChannel(getPlugin(), BUNGEE);
+    }
+
+    CommandBuilder.register("server:?", ServerCommand.class);
+    CommandBuilder.register("alert:", AlertCommand.class);
   }
 
-  /**
-   * Called after all addons were loaded
-   */
-  @Override
-  public void onPostEnable() {
-    // Post Enable logic
-  }
-
-  /**
-   * Called when disabling the addon
-   */
   @Override
   public void onDisable() {
-    // Disable logic
+    utils = null;
+    if (Bukkit.getMessenger().isOutgoingChannelRegistered(getPlugin(), BUNGEE)) {
+      Bukkit.getMessenger().unregisterOutgoingPluginChannel(getPlugin(), BUNGEE);
+    }
   }
 }
