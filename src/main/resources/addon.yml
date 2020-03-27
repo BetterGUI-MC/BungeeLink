@@ -2,3 +2,4 @@ name: ${project.name}
 version: ${project.version}
 main: ${project.mainClass}
 description: ${project.description}
+authors: ["HSGamer"]
