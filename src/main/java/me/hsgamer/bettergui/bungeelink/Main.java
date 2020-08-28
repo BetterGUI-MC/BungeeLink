@@ -22,8 +22,8 @@ public final class Main extends Addon {
       Bukkit.getMessenger().registerOutgoingPluginChannel(getPlugin(), BUNGEE);
     }
 
-    CommandBuilder.register("server:?", ServerCommand.class);
-    CommandBuilder.register("alert:", AlertCommand.class);
+    CommandBuilder.register(ServerCommand::new, "server:?");
+    CommandBuilder.register(AlertCommand::new, "alert:");
   }
 
   @Override

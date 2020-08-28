@@ -4,14 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
-import me.hsgamer.bettergui.util.CommonUtils;
+import me.hsgamer.bettergui.util.MessageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BungeeUtils {
 
-  private JavaPlugin plugin;
+  private final JavaPlugin plugin;
 
   public BungeeUtils(JavaPlugin plugin) {
     this.plugin = plugin;
@@ -34,8 +34,8 @@ public class BungeeUtils {
     } catch (IOException ex) {
       player.sendMessage(ChatColor.RED
           + "An unexpected exception has occurred. Please notify the server's staff about this. (They should look at the console).");
-      plugin.getLogger().log(Level.WARNING,
-          "Could not connect \"" + player.getName() + "\" to the server \"" + server + "\".", ex);
+      plugin.getLogger().log(Level.WARNING, ex, () ->
+          "Could not connect \"" + player.getName() + "\" to the server \"" + server + "\".");
     }
   }
 
@@ -46,7 +46,7 @@ public class BungeeUtils {
 
       out.writeUTF("Message");
       out.writeUTF("ALL");
-      out.writeUTF(CommonUtils.colorize(message));
+      out.writeUTF(MessageUtils.colorize(message));
 
       sendToBungee(player, byteArray);
     } catch (IOException ex) {
