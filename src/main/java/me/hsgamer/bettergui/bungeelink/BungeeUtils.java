@@ -1,63 +1,60 @@
 package me.hsgamer.bettergui.bungeelink;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.logging.Level;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import me.hsgamer.bettergui.util.MessageUtils;
-import org.bukkit.ChatColor;
+import me.hsgamer.bettergui.util.common.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BungeeUtils {
 
+  private static final String BUNGEE = "BungeeCord";
   private final JavaPlugin plugin;
 
   public BungeeUtils(JavaPlugin plugin) {
     this.plugin = plugin;
   }
 
-  public void connect(Player player, String server) {
-    try {
-      if (server.length() == 0) {
-        player.sendMessage("§cTarget server was \"\" (empty string) cannot connect to it.");
-        return;
-      }
-
-      ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-      DataOutputStream out = new DataOutputStream(byteArray);
-
-      out.writeUTF("Connect");
-      out.writeUTF(server); // Target Server
-
-      sendToBungee(player, byteArray);
-    } catch (IOException ex) {
-      player.sendMessage(ChatColor.RED
-          + "An unexpected exception has occurred. Please notify the server's staff about this. (They should look at the console).");
-      plugin.getLogger().log(Level.WARNING, ex, () ->
-          "Could not connect \"" + player.getName() + "\" to the server \"" + server + "\".");
+  public void register() {
+    if (!Bukkit.getMessenger().isOutgoingChannelRegistered(plugin, BUNGEE)) {
+      Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, BUNGEE);
     }
+  }
+
+  public void unregister() {
+    if (Bukkit.getMessenger().isOutgoingChannelRegistered(plugin, BUNGEE)) {
+      Bukkit.getMessenger().unregisterOutgoingPluginChannel(plugin, BUNGEE);
+    }
+  }
+
+  public void connect(Player player, String server) {
+    if (Validate.isNullOrEmpty(server)) {
+      MessageUtils.sendMessage(player, "&cTarget server was an empty string");
+      return;
+    }
+
+    ByteArrayDataOutput dataOutput = ByteStreams.newDataOutput();
+
+    dataOutput.writeUTF("ConnectOther");
+    dataOutput.writeUTF(player.getName());
+    dataOutput.writeUTF(server);
+
+    sendToBungee(player, dataOutput.toByteArray());
   }
 
   public void alert(Player player, String message) {
-    try {
-      ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-      DataOutputStream out = new DataOutputStream(byteArray);
+    ByteArrayDataOutput dataOutput = ByteStreams.newDataOutput();
 
-      out.writeUTF("Message");
-      out.writeUTF("ALL");
-      out.writeUTF(MessageUtils.colorize(message));
+    dataOutput.writeUTF("Message");
+    dataOutput.writeUTF("ALL");
+    dataOutput.writeUTF(MessageUtils.colorize(message));
 
-      sendToBungee(player, byteArray);
-    } catch (IOException ex) {
-      player.sendMessage(ChatColor.RED
-          + "An unexpected exception has occurred. Please notify the server's staff about this. (They should look at the console).");
-      plugin.getLogger().log(Level.WARNING,
-          "Could not send alert", ex);
-    }
+    sendToBungee(player, dataOutput.toByteArray());
   }
 
-  private void sendToBungee(Player player, ByteArrayOutputStream byteArray) {
-    player.sendPluginMessage(plugin, "BungeeCord", byteArray.toByteArray());
+  private void sendToBungee(Player player, byte[] byteArray) {
+    player.sendPluginMessage(plugin, BUNGEE, byteArray);
   }
 }
