@@ -1,30 +1,30 @@
 package me.hsgamer.bettergui.bungeelink;
 
-import me.hsgamer.bettergui.builder.CommandBuilder;
-import me.hsgamer.bettergui.bungeelink.command.AlertCommand;
-import me.hsgamer.bettergui.bungeelink.command.ServerCommand;
-import me.hsgamer.bettergui.object.addon.Addon;
+import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
+import me.hsgamer.bettergui.builder.ActionBuilder;
+import me.hsgamer.bettergui.bungeelink.action.AlertAction;
+import me.hsgamer.bettergui.bungeelink.action.ServerAction;
 
-public final class Main extends Addon {
+public final class Main extends BetterGUIAddon {
 
-  private static BungeeUtils utils;
+    private static BungeeUtils utils;
 
-  public static BungeeUtils getUtils() {
-    return utils;
-  }
+    public static BungeeUtils getUtils() {
+        return utils;
+    }
 
-  @Override
-  public void onEnable() {
-    utils = new BungeeUtils(getPlugin());
-    utils.register();
+    @Override
+    public void onEnable() {
+        utils = new BungeeUtils(getPlugin());
+        utils.register();
 
-    CommandBuilder.register(ServerCommand::new, "server:?");
-    CommandBuilder.register(AlertCommand::new, "alert:");
-  }
+        ActionBuilder.INSTANCE.register(ServerAction::new, "server");
+        ActionBuilder.INSTANCE.register(AlertAction::new, "alert");
+    }
 
-  @Override
-  public void onDisable() {
-    utils.unregister();
-    utils = null;
-  }
+    @Override
+    public void onDisable() {
+        utils.unregister();
+        utils = null;
+    }
 }
