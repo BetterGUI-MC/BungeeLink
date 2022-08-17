@@ -2,8 +2,8 @@ package me.hsgamer.bettergui.bungeelink;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils;
-import me.hsgamer.bettergui.lib.core.common.Validate;
+import me.hsgamer.hscore.bukkit.utils.MessageUtils;
+import me.hsgamer.hscore.common.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

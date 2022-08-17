@@ -1,11 +1,11 @@
 package me.hsgamer.bettergui.bungeelink;
 
-import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
 import me.hsgamer.bettergui.builder.ActionBuilder;
 import me.hsgamer.bettergui.bungeelink.action.AlertAction;
 import me.hsgamer.bettergui.bungeelink.action.ServerAction;
+import me.hsgamer.hscore.bukkit.addon.PluginAddon;
 
-public final class Main extends BetterGUIAddon {
+public final class Main extends PluginAddon {
 
     private static BungeeUtils utils;
 
