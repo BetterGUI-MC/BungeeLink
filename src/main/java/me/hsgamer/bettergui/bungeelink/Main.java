@@ -4,27 +4,18 @@ import me.hsgamer.bettergui.builder.ActionBuilder;
 import me.hsgamer.bettergui.bungeelink.action.AlertAction;
 import me.hsgamer.bettergui.bungeelink.action.ServerAction;
 import me.hsgamer.hscore.bukkit.addon.PluginAddon;
+import me.hsgamer.hscore.bukkit.channel.BungeeUtils;
 
 public final class Main extends PluginAddon {
-
-    private static BungeeUtils utils;
-
-    public static BungeeUtils getUtils() {
-        return utils;
-    }
-
     @Override
     public void onEnable() {
-        utils = new BungeeUtils(getPlugin());
-        utils.register();
-
-        ActionBuilder.INSTANCE.register(ServerAction::new, "server");
-        ActionBuilder.INSTANCE.register(AlertAction::new, "alert");
+        BungeeUtils.register(getPlugin());
+        ActionBuilder.INSTANCE.register(input -> new ServerAction(getPlugin(), input), "server");
+        ActionBuilder.INSTANCE.register(input -> new AlertAction(getPlugin(), input), "alert");
     }
 
     @Override
     public void onDisable() {
-        utils.unregister();
-        utils = null;
+        BungeeUtils.unregister(getPlugin());
     }
 }
