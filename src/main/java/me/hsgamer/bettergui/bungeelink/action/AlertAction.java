@@ -4,6 +4,7 @@ import me.hsgamer.bettergui.BetterGUI;
 import me.hsgamer.bettergui.api.action.BaseAction;
 import me.hsgamer.bettergui.builder.ActionBuilder;
 import me.hsgamer.hscore.bukkit.channel.BungeeUtils;
+import me.hsgamer.hscore.bukkit.scheduler.Scheduler;
 import me.hsgamer.hscore.task.element.TaskProcess;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,9 +28,6 @@ public class AlertAction extends BaseAction {
             return;
         }
         String replaced = getReplacedString(uuid);
-        Bukkit.getScheduler().runTask(BetterGUI.getInstance(), () -> {
-            BungeeUtils.sendMessage(plugin, player, "ALL", replaced);
-            process.next();
-        });
+        Scheduler.CURRENT.runEntityTaskWithFinalizer(BetterGUI.getInstance(), player, () -> BungeeUtils.sendMessage(plugin, player, "ALL", replaced), process::next, false);
     }
 }
