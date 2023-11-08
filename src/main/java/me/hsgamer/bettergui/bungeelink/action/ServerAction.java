@@ -1,6 +1,5 @@
 package me.hsgamer.bettergui.bungeelink.action;
 
-import me.hsgamer.bettergui.BetterGUI;
 import me.hsgamer.bettergui.api.action.BaseAction;
 import me.hsgamer.bettergui.builder.ActionBuilder;
 import me.hsgamer.hscore.bukkit.channel.BungeeUtils;
@@ -28,6 +27,6 @@ public class ServerAction extends BaseAction {
             return;
         }
         String replaced = getReplacedString(uuid);
-        Scheduler.CURRENT.runEntityTaskWithFinalizer(BetterGUI.getInstance(), player, () -> BungeeUtils.connectToServer(plugin, player, replaced), process::next, false);
+        Scheduler.current().sync().runEntityTaskWithFinalizer(player, () -> BungeeUtils.connectToServer(plugin, player, replaced), process::next);
     }
 }
